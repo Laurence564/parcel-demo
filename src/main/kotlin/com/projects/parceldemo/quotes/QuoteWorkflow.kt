@@ -6,12 +6,19 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 import java.time.LocalDateTime
 
-fun create(unvalidatedRequest: UnvalidatedRequest): Either<ValidationError, Quote> = either {
-    val validatedRequest = validateRequest(unvalidatedRequest).bind()
-    createQuote(validatedRequest).bind()
+
+fun interface CreateQuoteWorkflow {
+    operator fun invoke(unvalidatedRequest: UnvalidatedRequest): Either<ValidationError, Quote>
 }
 
-fun createQuote(validatedRequest: ValidatedRequest): Either<ValidationError, Quote> = either {
+fun createQuoteWorkflow(clock: () -> LocalDateTime): CreateQuoteWorkflow {
+    return CreateQuoteWorkflow { unvalidatedRequest ->
+        createQuote(clock(), unvalidatedRequest)
+    }
+}
+
+fun createQuote(clock: LocalDateTime, unvalidatedRequest: UnvalidatedRequest): Either<ValidationError, Quote> = either {
+    val validatedRequest = validateRequest(unvalidatedRequest).bind()
     val basePrice = validatedRequest.weight.pricingBand().basePrice
 
     val price = when (validatedRequest.delivery.destination) {
@@ -21,11 +28,9 @@ fun createQuote(validatedRequest: ValidatedRequest): Either<ValidationError, Quo
             .setScale(2, RoundingMode.HALF_UP)
     }
 
-    val now = LocalDateTime.now()
-
     Quote(
         validatedRequest = validatedRequest,
         price = price,
-        validUntil = now.plusMinutes(30)
+        validUntil = clock.plusMinutes(30)
     )
 }

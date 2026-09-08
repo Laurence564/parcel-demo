@@ -9,6 +9,10 @@ data class Quote(
     val validUntil: LocalDateTime
 )
 
+fun Quote.mapToResponse(): QuoteResponse {
+
+}
+
 enum class PricingBand(val basePrice: BigDecimal) {
     UP_TO_5_KG(BigDecimal("3.00")),
     UP_TO_10_KG(BigDecimal("5.00")),

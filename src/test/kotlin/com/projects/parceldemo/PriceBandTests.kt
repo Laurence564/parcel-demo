@@ -2,7 +2,7 @@ package com.projects.parceldemo
 
 import com.projects.parceldemo.quotes.UnvalidatedRequest
 import com.projects.parceldemo.quotes.ValidationError
-import com.projects.parceldemo.quotes.create
+import com.projects.parceldemo.quotes.createQuote
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Import
@@ -23,7 +23,7 @@ class PriceBandTests {
         )
 
         // Act
-        val actualValidationError = create(unvalidatedRequest).leftOrNull()
+        val actualValidationError = createQuote(unvalidatedRequest).leftOrNull()
         val expectedValidationError = ValidationError.WeightMustBeGreaterThanZero
 
         // Assert
@@ -40,7 +40,7 @@ class PriceBandTests {
         )
 
         // Act
-        val actualValidationError = create(unvalidatedRequest).leftOrNull()
+        val actualValidationError = createQuote(unvalidatedRequest).leftOrNull()
         val expectedValidationError = ValidationError.WeightMustBeGreaterThanZero
 
         // Assert
@@ -57,7 +57,7 @@ class PriceBandTests {
         )
 
         // Act
-        val actualValidationError = create(unvalidatedRequest).leftOrNull()
+        val actualValidationError = createQuote(unvalidatedRequest).leftOrNull()
         val expectedValidationError = ValidationError.WeightMustBeGreaterThanZero
 
         // Assert
@@ -74,7 +74,7 @@ class PriceBandTests {
         )
 
         // Act
-        val actualValidationError = create(unvalidatedRequest).leftOrNull()
+        val actualValidationError = createQuote(unvalidatedRequest).leftOrNull()
         val expectedValidationError = ValidationError.WeightMustBeGreaterThanZero
 
         // Assert
@@ -91,7 +91,7 @@ class PriceBandTests {
         )
 
         // Act
-        val actualQuote = create(unvalidatedRequest)
+        val actualQuote = createQuote(unvalidatedRequest)
         val expectedQuote = BigDecimal("3.00")
 
         // Assert
@@ -108,7 +108,7 @@ class PriceBandTests {
         )
 
         // Act
-        val actualQuote = create(unvalidatedRequest)
+        val actualQuote = createQuote(unvalidatedRequest)
         val expectedQuote = BigDecimal("3.60")
 
         // Assert
@@ -125,7 +125,7 @@ class PriceBandTests {
         )
 
         // Act
-        val actualQuote = create(unvalidatedRequest)
+        val actualQuote = createQuote(unvalidatedRequest)
         val expectedQuote = BigDecimal("3.00")
 
         // Assert
@@ -142,7 +142,7 @@ class PriceBandTests {
         )
 
         // Act
-        val actualQuote = create(unvalidatedRequest)
+        val actualQuote = createQuote(unvalidatedRequest)
         val expectedQuote = BigDecimal("3.60")
 
         // Assert
@@ -159,7 +159,7 @@ class PriceBandTests {
         )
 
         // Act
-        val actualQuote = create(unvalidatedRequest)
+        val actualQuote = createQuote(unvalidatedRequest)
         val expectedQuote = BigDecimal("3.00")
 
         // Assert
@@ -176,7 +176,7 @@ class PriceBandTests {
         )
 
         // Act
-        val actualQuote = create(unvalidatedRequest)
+        val actualQuote = createQuote(unvalidatedRequest)
         val expectedQuote = BigDecimal("3.60")
 
         // Assert
@@ -193,7 +193,7 @@ class PriceBandTests {
         )
 
         // Act
-        val actualQuote = create(unvalidatedRequest)
+        val actualQuote = createQuote(unvalidatedRequest)
         val expectedQuote = BigDecimal("3.00")
 
         // Assert
@@ -210,7 +210,7 @@ class PriceBandTests {
         )
 
         // Act
-        val actualQuote = create(unvalidatedRequest)
+        val actualQuote = createQuote(unvalidatedRequest)
         val expectedQuote = BigDecimal("3.60")
 
         // Assert
@@ -227,7 +227,7 @@ class PriceBandTests {
         )
 
         // Act
-        val actualQuote = create(unvalidatedRequest)
+        val actualQuote = createQuote(unvalidatedRequest)
         val expectedQuote = BigDecimal("5.00")
 
         // Assert
@@ -244,7 +244,7 @@ class PriceBandTests {
         )
 
         // Act
-        val actualQuote = create(unvalidatedRequest)
+        val actualQuote = createQuote(unvalidatedRequest)
         val expectedQuote = BigDecimal("6.00")
 
         // Assert
@@ -261,7 +261,7 @@ class PriceBandTests {
         )
 
         // Act
-        val actualQuote = create(unvalidatedRequest)
+        val actualQuote = createQuote(unvalidatedRequest)
         val expectedQuote = BigDecimal("5.00")
 
         // Assert
@@ -278,7 +278,7 @@ class PriceBandTests {
         )
 
         // Act
-        val actualQuote = create(unvalidatedRequest)
+        val actualQuote = createQuote(unvalidatedRequest)
         val expectedQuote = BigDecimal("6.00")
 
         // Assert
@@ -295,7 +295,7 @@ class PriceBandTests {
         )
 
         // Act
-        val actualQuote = create(unvalidatedRequest)
+        val actualQuote = createQuote(unvalidatedRequest)
         val expectedQuote = BigDecimal("5.00")
 
         // Assert
@@ -312,7 +312,7 @@ class PriceBandTests {
         )
 
         // Act
-        val actualQuote = create(unvalidatedRequest)
+        val actualQuote = createQuote(unvalidatedRequest)
         val expectedQuote = BigDecimal("6.00")
 
         // Assert
@@ -329,7 +329,7 @@ class PriceBandTests {
         )
 
         // Act
-        val actualQuote = create(unvalidatedRequest)
+        val actualQuote = createQuote(unvalidatedRequest)
         val expectedQuote = BigDecimal("7.00")
 
         // Assert
@@ -346,7 +346,7 @@ class PriceBandTests {
         )
 
         // Act
-        val actualQuote = create(unvalidatedRequest)
+        val actualQuote = createQuote(unvalidatedRequest)
         val expectedQuote = BigDecimal("8.40")
 
         // Assert
@@ -363,7 +363,7 @@ class PriceBandTests {
         )
 
         // Act
-        val actualQuote = create(unvalidatedRequest)
+        val actualQuote = createQuote(unvalidatedRequest)
         val expectedQuote = BigDecimal("7.00")
 
         // Assert
@@ -380,7 +380,7 @@ class PriceBandTests {
         )
 
         // Act
-        val actualQuote = create(unvalidatedRequest)
+        val actualQuote = createQuote(unvalidatedRequest)
         val expectedQuote = BigDecimal("8.40")
 
         // Assert
@@ -397,7 +397,7 @@ class PriceBandTests {
         )
 
         // Act
-        val actualQuote = create(unvalidatedRequest)
+        val actualQuote = createQuote(unvalidatedRequest)
         val expectedQuote = BigDecimal("7.00")
 
         // Assert
@@ -414,7 +414,7 @@ class PriceBandTests {
         )
 
         // Act
-        val actualQuote = create(unvalidatedRequest)
+        val actualQuote = createQuote(unvalidatedRequest)
         val expectedQuote = BigDecimal("8.40")
 
         // Assert
@@ -431,7 +431,7 @@ class PriceBandTests {
         )
 
         // Act
-        val actualQuote = create(unvalidatedRequest)
+        val actualQuote = createQuote(unvalidatedRequest)
         val expectedQuote = BigDecimal("10.00")
 
         // Assert
@@ -448,7 +448,7 @@ class PriceBandTests {
         )
 
         // Act
-        val actualQuote = create(unvalidatedRequest)
+        val actualQuote = createQuote(unvalidatedRequest)
         val expectedQuote = BigDecimal("12.00")
 
         // Assert
@@ -465,7 +465,7 @@ class PriceBandTests {
         )
 
         // Act
-        val actualQuote = create(unvalidatedRequest)
+        val actualQuote = createQuote(unvalidatedRequest)
         val expectedQuote = BigDecimal("10.00")
 
         // Assert
@@ -482,7 +482,7 @@ class PriceBandTests {
         )
 
         // Act
-        val actualQuote = create(unvalidatedRequest)
+        val actualQuote = createQuote(unvalidatedRequest)
         val expectedQuote = BigDecimal("12.00")
 
         // Assert
@@ -499,7 +499,7 @@ class PriceBandTests {
         )
 
         // Act
-        val actualQuote = create(unvalidatedRequest)
+        val actualQuote = createQuote(unvalidatedRequest)
         val expectedQuote = BigDecimal("10.00")
 
         // Assert
@@ -516,7 +516,7 @@ class PriceBandTests {
         )
 
         // Act
-        val actualQuote = create(unvalidatedRequest)
+        val actualQuote = createQuote(unvalidatedRequest)
         val expectedQuote = BigDecimal("12.00")
 
         // Assert
@@ -533,7 +533,7 @@ class PriceBandTests {
         )
 
         // Act
-        val actualValidationError = create(unvalidatedRequest).leftOrNull()
+        val actualValidationError = createQuote(unvalidatedRequest).leftOrNull()
         val expectedValidationError = ValidationError.WeightMustNotExceedTwentyKg
 
         // Assert
@@ -550,7 +550,7 @@ class PriceBandTests {
         )
 
         // Act
-        val actualValidationError = create(unvalidatedRequest).leftOrNull()
+        val actualValidationError = createQuote(unvalidatedRequest).leftOrNull()
         val expectedValidationError = ValidationError.WeightMustNotExceedTwentyKg
 
         // Assert
