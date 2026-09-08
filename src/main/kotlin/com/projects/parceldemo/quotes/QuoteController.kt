@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 class QuoteController(private val createQuote: CreateQuoteWorkflow) {
 
     @PostMapping("/new")
-    fun acceptWorkoutInvite(@RequestBody unvalidatedRequest: UnvalidatedRequest): QuoteResponse {
+    fun createNewQuote(@RequestBody unvalidatedRequest: UnvalidatedRequest): QuoteResponse {
 
         val quote = createQuote(unvalidatedRequest).getOrElse { e: ValidationError ->
             throw e.toResponseStatusException()
