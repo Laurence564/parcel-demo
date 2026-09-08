@@ -17,7 +17,10 @@ fun createQuoteWorkflow(clock: () -> LocalDateTime): CreateQuoteWorkflow {
     }
 }
 
-fun createQuote(clock: LocalDateTime, unvalidatedRequest: UnvalidatedRequest): Either<ValidationError, Quote> = either {
+fun createQuote(
+    clock: LocalDateTime,
+    unvalidatedRequest: UnvalidatedRequest
+): Either<ValidationError, Quote> = either {
     val validatedRequest = validateRequest(unvalidatedRequest).bind()
     val basePrice = validatedRequest.weight.pricingBand().basePrice
 

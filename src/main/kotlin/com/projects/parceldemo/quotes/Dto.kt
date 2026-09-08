@@ -1,3 +1,3 @@
 package com.projects.parceldemo.quotes
 
-data class QuoteResponse()
+data class QuoteResponse(val int: Int)

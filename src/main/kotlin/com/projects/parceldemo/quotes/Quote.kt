@@ -10,7 +10,7 @@ data class Quote(
 )
 
 fun Quote.mapToResponse(): QuoteResponse {
-
+    throw NotImplementedError()
 }
 
 enum class PricingBand(val basePrice: BigDecimal) {
