@@ -60,3 +60,21 @@ allOpen {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+
+tasks.test {
+    filter {
+        includeTestsMatching("com.projects.parceldemo.unit.*")
+    }
+}
+
+tasks.register<Test>("integrationTest") {
+    description = "Allow Github action to run integration tests."
+    testClassesDirs = sourceSets["test"].output.classesDirs
+    classpath = sourceSets["test"].runtimeClasspath
+    shouldRunAfter(tasks.test)
+
+    filter {
+        includeTestsMatching("com.projects.parceldemo.integration.*")
+        isFailOnNoMatchingTests = false
+    }
+}
