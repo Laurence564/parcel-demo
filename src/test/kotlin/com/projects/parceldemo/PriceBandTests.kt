@@ -4,14 +4,10 @@ import com.projects.parceldemo.quotes.UnvalidatedRequest
 import com.projects.parceldemo.quotes.ValidationError
 import com.projects.parceldemo.quotes.createQuoteWorkflow
 import org.junit.jupiter.api.Test
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.context.annotation.Import
 import java.math.BigDecimal
 import java.time.LocalDateTime
 import kotlin.test.assertEquals
 
-@Import(TestcontainersConfiguration::class)
-@SpringBootTest
 class PriceBandTests {
 
     private val createQuote = createQuoteWorkflow(clock = LocalDateTime::now)
