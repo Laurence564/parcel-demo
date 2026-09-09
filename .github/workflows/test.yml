@@ -2,6 +2,8 @@ name: Run test suite
 
 on:
   workflow_dispatch:
+  pull_request:
+    branches: [ main ]
 
 permissions:
   contents: read
@@ -32,6 +34,8 @@ jobs:
         with:
           name: unit-test-report
           path: build/reports/tests/test
+          retention-days: 3
+          if-no-files-found: ignore
 
   run_integration_tests:
     name: Integration tests
@@ -59,3 +63,5 @@ jobs:
         with:
           name: integration-test-report
           path: build/reports/tests/integrationTest
+          retention-days: 3
+          if-no-files-found: ignore
