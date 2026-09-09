@@ -1,4 +1,4 @@
-package com.projects.parceldemo
+package com.projects.parceldemo.unit
 
 import com.projects.parceldemo.quotes.UnvalidatedRequest
 import com.projects.parceldemo.quotes.ValidationError
