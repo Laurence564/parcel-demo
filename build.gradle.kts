@@ -32,6 +32,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("tools.jackson.module:jackson-module-kotlin")
     //runtimeOnly("org.postgresql:postgresql")
+    testImplementation("com.microsoft.playwright:playwright:1.62.0")
     testImplementation("io.rest-assured:rest-assured:5.5.6")
     //testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test")
     testImplementation("org.springframework.boot:spring-boot-starter-restclient-test")
@@ -75,6 +76,18 @@ tasks.register<Test>("integrationTest") {
 
     filter {
         includeTestsMatching("com.projects.parceldemo.integration.*")
+        isFailOnNoMatchingTests = false
+    }
+}
+
+tasks.register<Test>("e2eTest") {
+    description = "Allow Github action to run e2e tests."
+    testClassesDirs = sourceSets["test"].output.classesDirs
+    classpath = sourceSets["test"].runtimeClasspath
+    shouldRunAfter("integrationTest")
+
+    filter {
+        includeTestsMatching("com.projects.parceldemo.e2e.*")
         isFailOnNoMatchingTests = false
     }
 }

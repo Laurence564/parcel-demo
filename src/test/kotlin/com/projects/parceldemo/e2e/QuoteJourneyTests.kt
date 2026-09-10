@@ -1,0 +1,72 @@
+package com.projects.parceldemo.e2e
+
+import com.microsoft.playwright.Browser
+import com.microsoft.playwright.Page
+import com.microsoft.playwright.Playwright
+import com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
+
+class QuoteJourneyTests {
+
+    companion object {
+        private val baseUrl: String = System.getenv("E2E_BASE_URL") ?: "http://localhost:8080"
+        private val headless: Boolean = System.getenv("E2E_HEADED") == null
+
+        private lateinit var playwright: Playwright
+        private lateinit var browser: Browser
+
+        @JvmStatic
+        @BeforeAll
+        fun launchBrowser() {
+            playwright = Playwright.create()
+            browser = playwright.chromium().launch(
+                com.microsoft.playwright.BrowserType.LaunchOptions().setHeadless(headless)
+            )
+        }
+
+        @JvmStatic
+        @AfterAll
+        fun closeBrowser() {
+            browser.close()
+            playwright.close()
+        }
+    }
+
+    private fun requestQuote(recipientName: String, weightKg: String, country: String): Page {
+        val page = browser.newContext().newPage()
+
+        page.navigate(baseUrl)
+        page.getByTestId("recipient-name").fill(recipientName)
+        page.getByTestId("weight-kg").fill(weightKg)
+        page.getByTestId("country").selectOption(country)
+        page.getByTestId("get-quote").click()
+
+        return page
+    }
+
+    @Test
+    fun `a domestic quote is displayed for a valid request`() {
+        val page = requestQuote(recipientName = "John Snow", weightKg = "5.01", country = "UK")
+
+        assertThat(page.getByTestId("price")).hasText("£5.00")
+        assertThat(page.getByTestId("destination")).hasText("DOMESTIC")
+    }
+
+    @Test
+    fun `an international quote applies the surcharge`() {
+        val page = requestQuote(recipientName = "John Smith", weightKg = "5.01", country = "FR")
+
+        assertThat(page.getByTestId("price")).hasText("£6.00")
+        assertThat(page.getByTestId("destination")).hasText("INTERNATIONAL")
+    }
+
+    @Test
+    fun `a validation error is shown to the user`() {
+        val page = requestQuote(recipientName = "John Smith", weightKg = "20.01", country = "UK")
+
+        assertThat(page.getByTestId("error"))
+            .hasText("Maximum weight value exceeds the 20 KG threshold.")
+    }
+}
