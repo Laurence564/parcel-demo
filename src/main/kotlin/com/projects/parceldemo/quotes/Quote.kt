@@ -9,9 +9,15 @@ data class Quote(
     val validUntil: LocalDateTime
 )
 
-fun Quote.mapToResponse(): QuoteResponse {
-    throw NotImplementedError()
-}
+fun Quote.mapToResponse(): QuoteResponse =
+    QuoteResponse(
+        recipientName = validatedRequest.recipientName.value,
+        weightKg = validatedRequest.weight.value,
+        country = validatedRequest.delivery.country.name,
+        destination = validatedRequest.delivery.destination.name,
+        price = price.toPlainString(),
+        validUntil = validUntil.toString()
+    )
 
 enum class PricingBand(val basePrice: BigDecimal) {
     UP_TO_5_KG(BigDecimal("3.00")),
