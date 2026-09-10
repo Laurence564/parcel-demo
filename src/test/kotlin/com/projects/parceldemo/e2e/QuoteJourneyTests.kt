@@ -7,11 +7,18 @@ import com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.web.server.LocalServerPort
 
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class QuoteJourneyTests {
 
+    @LocalServerPort
+    private var port: Int = 0
+
+    private val baseUrl: String get() = "http://localhost:$port"
+
     companion object {
-        private val baseUrl: String = System.getenv("E2E_BASE_URL") ?: "http://localhost:8080"
         private val headless: Boolean = System.getenv("E2E_HEADED") == null
 
         private lateinit var playwright: Playwright
