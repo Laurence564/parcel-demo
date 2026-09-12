@@ -21,6 +21,8 @@ repositories {
     mavenCentral()
 }
 
+extra["tomcat.version"] = "11.0.25"
+
 dependencies {
     implementation(platform("io.arrow-kt:arrow-stack:1.2.4"))
     implementation("io.arrow-kt:arrow-core")
