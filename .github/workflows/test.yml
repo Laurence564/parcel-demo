@@ -33,7 +33,7 @@ jobs:
       - name: Scan SBOM with Grype
         uses: anchore/scan-action@v7
         with:
-          sbom: build/reports/cyclonedx/bom.json
+          sbom: build/reports/sbom/bom.json
           fail-build: true
           severity-cutoff: high
           only-fixed: true
