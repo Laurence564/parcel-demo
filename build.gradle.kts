@@ -94,3 +94,7 @@ tasks.register<Test>("e2eTest") {
         isFailOnNoMatchingTests = false
     }
 }
+
+tasks.cyclonedxBom {
+    jsonOutput = layout.buildDirectory.file("reports/sbom/bom.json")
+}
