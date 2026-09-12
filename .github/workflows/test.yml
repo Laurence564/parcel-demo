@@ -50,6 +50,7 @@ jobs:
   run_unit_tests:
     name: Unit tests
     runs-on: ubuntu-latest
+    needs: run_supply_chain_scan
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v7
