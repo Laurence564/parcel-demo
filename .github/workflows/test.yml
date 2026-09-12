@@ -9,6 +9,44 @@ permissions:
   contents: read
 
 jobs:
+  run_supply_chain_scan:
+    name: Supply chain scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up JDK
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          validate-wrappers: true
+
+      - name: Generate SBOM
+        run: ./gradlew cyclonedxBom
+
+      - name: Scan SBOM with Grype
+        uses: anchore/scan-action@v7
+        with:
+          sbom: build/reports/cyclonedx/bom.json
+          fail-build: true
+          severity-cutoff: high
+          only-fixed: true
+          output-format: table
+
+      - name: Upload scan report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: grype-report
+          path: ${{ steps.grype.outputs.table }}
+          retention-days: 5
+
   run_unit_tests:
     name: Unit tests
     runs-on: ubuntu-latest
