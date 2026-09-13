@@ -4,6 +4,7 @@ import io.restassured.RestAssured
 import io.restassured.http.ContentType
 import org.hamcrest.Matchers.equalTo
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 import org.springframework.boot.test.context.SpringBootTest
@@ -27,6 +28,53 @@ class CreateQuoteEndPointTests {
           "country": "$country"
         }
     """.trimIndent()
+
+    @Test
+    fun `Recipient name exceeds 50 characters`() {
+        // Arrange
+        val longName = "a".repeat(51)
+        val requestBody = """
+            {
+               "recipientName": "$longName",
+               "weightKg": "10.00",
+               "country": "UK"
+            }
+        """.trimIndent()
+
+        // Act && Assert
+        val expectedMessage = "Recipient name must not exceed fifty characters."
+
+        RestAssured.given()
+            .contentType(ContentType.JSON)
+            .body(requestBody)
+            .post("/quotes/new")
+            .then()
+            .statusCode(400)
+            .body("errors[0].message", equalTo(expectedMessage))
+    }
+
+    @Test
+    fun `Recipient name is left empty`() {
+        // Arrange
+        val requestBody = """
+            {
+               "recipientName": "",
+               "weightKg": "10.00",
+               "country": "UK"
+            }
+        """.trimIndent()
+
+        // Act && Assert
+        val expectedMessage = "Please provide a recipient name."
+
+        RestAssured.given()
+            .contentType(ContentType.JSON)
+            .body(requestBody)
+            .post("/quotes/new")
+            .then()
+            .statusCode(400)
+            .body("errors[0].message", equalTo(expectedMessage))
+    }
 
     @ParameterizedTest(name = "{0} KG to {1} quotes {2} GBP")
     @CsvSource(
