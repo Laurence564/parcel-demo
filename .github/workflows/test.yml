@@ -9,10 +9,10 @@ permissions:
   contents: read
 
 jobs:
-  run_unit_tests:
-    name: Unit tests
+  run_supply_chain_scan:
+    name: Supply chain scan
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v7
 
@@ -24,6 +24,41 @@ jobs:
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
+        with:
+          validate-wrappers: true
+
+      - name: Generate SBOM
+        run: ./gradlew cyclonedxBom
+
+      - name: Scan SBOM with Grype
+        uses: anchore/scan-action@v7
+        with:
+          sbom: build/reports/sbom/bom.json
+          fail-build: true
+          severity-cutoff: high
+          only-fixed: true
+          output-format: table
+
+  run_unit_tests:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    needs: run_supply_chain_scan
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Set up JDK
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          validate-wrappers: true
 
       - name: Run unit tests
         run: ./gradlew test
@@ -44,6 +79,8 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - name: Set up JDK
         uses: actions/setup-java@v6
@@ -53,6 +90,8 @@ jobs:
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
+        with:
+          validate-wrappers: true
 
       - name: Run integration tests
         run: ./gradlew integrationTest
@@ -65,3 +104,44 @@ jobs:
           path: build/reports/tests/integrationTest
           retention-days: 3
           if-no-files-found: ignore
+
+  run_e2e_tests:
+    name: E2E tests
+    runs-on: ubuntu-latest
+    needs: run_integration_tests
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Set up JDK
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          validate-wrappers: true
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-1.62.0
+
+      - name: Install Playwright browsers
+        run: npx playwright@1.62.0 install --with-deps chromium
+
+      - name: Run e2e tests
+        run: ./gradlew e2eTest
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-test-report
+          path: build/reports/tests/e2eTest
+          retention-days: 5

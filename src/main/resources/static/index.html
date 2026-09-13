@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parcel Quote</title>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            max-width: 30rem;
+            margin: 3rem auto;
+            padding: 0 1rem;
+            line-height: 1.5;
+        }
+        label { display: block; margin-top: 1rem; font-weight: 600; }
+        input, select, button {
+            width: 100%;
+            padding: 0.5rem;
+            margin-top: 0.25rem;
+            font: inherit;
+            box-sizing: border-box;
+        }
+        button { margin-top: 1.5rem; cursor: pointer; }
+        .panel { margin-top: 1.5rem; padding: 1rem; border-radius: 0.25rem; }
+        .result { background: #e8f5e9; border: 1px solid #4caf50; }
+        .error { background: #ffebee; border: 1px solid #e53935; }
+        .price { font-size: 2rem; font-weight: 700; }
+    </style>
+</head>
+<body>
+<main>
+    <h1>Get a parcel quote</h1>
+
+    <form id="quote-form">
+        <label for="recipient-name">Recipient name</label>
+        <input type="text" id="recipient-name" data-testid="recipient-name">
+
+        <label for="weight-kg">Weight (kg)</label>
+        <input type="text" id="weight-kg" data-testid="weight-kg">
+
+        <label for="country">Destination</label>
+        <select id="country" data-testid="country">
+            <option value="UK">United Kingdom</option>
+            <option value="US">United States</option>
+            <option value="AU">Australia</option>
+            <option value="CA">Canada</option>
+            <option value="ES">Spain</option>
+            <option value="FR">France</option>
+            <option value="IT">Italy</option>
+            <option value="LT">Lithuania</option>
+        </select>
+
+        <button type="submit" data-testid="get-quote">Get quote</button>
+    </form>
+
+    <div class="panel result" id="result" data-testid="result" hidden>
+        <div class="price" data-testid="price"></div>
+        <div data-testid="destination"></div>
+        <div data-testid="valid-until"></div>
+    </div>
+
+    <div class="panel error" id="error" data-testid="error" hidden></div>
+</main>
+
+<script>
+    const form = document.getElementById('quote-form');
+    const resultPanel = document.getElementById('result');
+    const errorPanel = document.getElementById('error');
+
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        resultPanel.hidden = true;
+        errorPanel.hidden = true;
+
+        const response = await fetch('/quotes/new', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                recipientName: document.getElementById('recipient-name').value,
+                weightKg: document.getElementById('weight-kg').value,
+                country: document.getElementById('country').value
+            })
+        });
+
+        const body = await response.json();
+
+        if (response.ok) {
+            resultPanel.querySelector('[data-testid="price"]').textContent = `£${body.price}`;
+            resultPanel.querySelector('[data-testid="destination"]').textContent = body.destination;
+            resultPanel.querySelector('[data-testid="valid-until"]').textContent =
+                `Valid until ${body.validUntil.replace('T', ' ').slice(0, 16)}`;
+            resultPanel.hidden = false;
+        } else {
+            errorPanel.textContent = body.errors[0].message;
+            errorPanel.hidden = false;
+        }
+    });
+</script>
+</body>
+</html>
