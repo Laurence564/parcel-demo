@@ -11,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class QuoteJourneyTests {
+class PositiveQuoteJourneyTests {
 
     @LocalServerPort
     private var port: Int = 0
@@ -69,11 +69,4 @@ class QuoteJourneyTests {
         assertThat(page.getByTestId("destination")).hasText("INTERNATIONAL")
     }
 
-    @Test
-    fun `a validation error is shown to the user`() {
-        val page = requestQuote(recipientName = "John Smith", weightKg = "20.01", country = "UK")
-
-        assertThat(page.getByTestId("error"))
-            .hasText("Maximum weight value exceeds the 20 KG threshold.")
-    }
 }
