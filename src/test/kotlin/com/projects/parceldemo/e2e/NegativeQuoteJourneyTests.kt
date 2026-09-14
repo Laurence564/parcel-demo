@@ -105,6 +105,14 @@ class NegativeQuoteJourneyTests {
             .hasText("Maximum weight value exceeds the 20 KG threshold.")
     }
 
+    @Test
+    fun `Request for a quote exceeds the two decimal places`() {
+        val page = requestQuote(recipientName = "John Smith", weightKg = "20.111", country = "UK")
+
+        assertThat(page.getByTestId("error"))
+            .hasText("Please enter a weight with a maximum of two decimal places.")
+    }
+
     private fun requestQuote(
         recipientName: String,
         weightKg: String,
