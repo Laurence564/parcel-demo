@@ -2,13 +2,13 @@
 
 ___
 Parcel demo is a basic quote generator for delivering parcels domestically and internationally.
-It highlights the power of functional programming and DDD to cover the tests levels:
+It highlights the power of Functional Programming and DDD to build highly testable code iteratively on small units of code.
 
-* Unit tests
-* Integration tests
-* System testing
+[TEST APPROACH](#test-approach) | [UNIT TESTING](#unit-testing) | [INTEGRATION TESTING](#integration-testing) | [SYSTEM TESTING](#system-testing) | [ARCHITECTURE CHOICES](#architecture-choices) 
+___
 
-### High level test analysis
+
+### Test approach
 
 Even simple ideas get complex quickly transferring into code, therefore testing tables are a great way to zoom out and
 get an overarching view point of that complexity.
@@ -39,3 +39,24 @@ ___
 | BA3               | 10            | 9.99       | 10      | 10.01      | £5 / £5 / £7                     |
 | BA4               | 15            | 14.99      | 15      | 15.01      | £7 / £7 / £10                    |
 | BA5               | 20            | 19.99      | 20      | 20.01      | £10 / £10 / Error                |
+
+___
+### Unit Testing
+In the testing pyramid, this is where the bulk of our tests live. The code under test should be pure functions which are
+aimed at testing domain logic. There should be no I/O at this stage as that can be tested at the integration level.
+Given we have structured our code to pass in dependencies as parameters and return either an object or error (as opposed
+to throwing) then we are in a great position to get maximum code coverage.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
