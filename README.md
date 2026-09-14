@@ -1,11 +1,10 @@
 ## Parcel demo
 
-___
 Parcel demo is a basic quote generator for delivering parcels domestically and internationally.
 It highlights the power of Functional Programming and DDD to build highly testable code iteratively on small units of code.
 
 [TEST APPROACH](#test-approach) | [UNIT TESTING](#unit-testing) | [INTEGRATION TESTING](#integration-testing) | [SYSTEM TESTING](#system-testing) | [ARCHITECTURE CHOICES](#architecture-choices) 
-___
+##
 
 
 ### Test approach
@@ -14,8 +13,6 @@ Even simple ideas get complex quickly transferring into code, therefore testing 
 get an overarching view point of that complexity.
 In an application focussing on pricing bands, the equivalence partitioning table and boundary analysis are great
 options.
-
-___
 
 #### Equivalence Partition (base costs)
 
@@ -28,8 +25,8 @@ ___
 | EP5                   | 15.01 to 20       | Valid         | Base Quote £10   | `16`, `20`      |
 | EP6                   | greater than 20   | Invalid       | Validation Error | `21`            |
 
-___
-
+<br>
+  
 #### Boundary Analysis (base costs)
 
 | Boundary Analysis | Boundary (KG) | Below (KG) | On (KG) | Above (KG) | Expected Oucome (Below/On/Above) |
@@ -40,7 +37,7 @@ ___
 | BA4               | 15            | 14.99      | 15      | 15.01      | £7 / £7 / £10                    |
 | BA5               | 20            | 19.99      | 20      | 20.01      | £10 / £10 / Error                |
 
-___
+#
 ### Unit Testing
 In the testing pyramid, this is where the bulk of our tests live. The code under test should be pure functions which are
 aimed at testing domain logic. There should be no I/O at this stage as that can be tested at the integration level.
