@@ -39,21 +39,23 @@ options.
 
 #
 ### Unit Testing
-In the testing pyramid, this is where the bulk of our tests live. The code under test should be pure functions which are
-aimed at testing domain logic. There should be no I/O at this stage as that can be tested at the integration level.
-Given we have structured our code to pass in dependencies as parameters and return either an object or error (as opposed
-to throwing) then we are in a great position to get maximum code coverage.
+In the testing pyramid, this is where the bulk tests live. The unit under test is a pure partial function where 
+the clock dependency can be easily passed in as a parameter.
 
+```kotlin
+private val createQuote = createQuoteWorkflow(clock = LocalDateTime::now)
+```
 
+Using the Arrow library, the workflow function can return either a Quote or a ValidationError which is enforced 
+by the interface signature.
 
+```kotlin
+fun interface CreateQuoteWorkflow {
+    operator fun invoke(unvalidatedRequest: UnvalidatedRequest): Either<ValidationError, Quote>
+}
+```
 
-
-
-
-
-
-
-
-
-
-
+Because of this separation of concerns, tests are concise and are easy to reason about. 
+Quick links to unit tests:
+  * [FieldValidationTests.kt](src/test/kotlin/com/projects/parceldemo/unit/FieldValidationTests.kt)
+  * [PriceBandTests.kt](src/test/kotlin/com/projects/parceldemo/unit/PriceBandTests.kt)
