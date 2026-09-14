@@ -11,14 +11,13 @@
 
 ### Boundary Analysis
 
-| Boundary Analysis | Weight range (KG) | Valid/Invalid | Expected result  | Core test condition |
-|-------------------|-------------------|---------------|------------------|---------------------|
-| BA1               | less than 0.01    | Invalid       | Validation Error | `-0.01`, `0`        |
-| BA2               | 0.01 to 5         | Valid         | Base Quote £3    | `0.01`, `4.99`      |
-| BA3               | 5.01 to 10        | Valid         | Base Quote £5    | `5.01`, `9.99`      |
-| BA4               | 10.01 to 15       | Valid         | Base Quote £7    | `10.01`, `14.99`    |
-| BA5               | 15.01 to 20       | Valid         | Base Quote £10   | `15.01`, `19.99`    |
-| BA6               | greater than 20   | Invalid       | Validation Error | `20.01`             |
+| Boundary Analysis | Boundary (KG) | Below (KG) | On (KG) | Above (KG) | Expected Oucome (Below/On/Above) |
+|-------------------|---------------|------------|---------|------------|----------------------------------|
+| BA1               | 0             | -0.01      | 0       | 0.01       | Error / Error / £3               |
+| BA2               | 5             | 4.99       | 5       | 5.01       | £3 / £3 / £5                     |
+| BA3               | 10            | 9.99       | 10      | 10.01      | £5 / £5 / £7                     |
+| BA4               | 15            | 14.99      | 15      | 15.01      | £7 / £7 / £10                    |
+| BA5               | 20            | 19.99      | 20      | 20.01      | £10 / £10 / Error                |
 
 ### Decision Table
 
