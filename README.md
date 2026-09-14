@@ -59,3 +59,15 @@ Because of this separation of concerns, tests are concise and are easy to reason
 Quick links to unit tests:
   * [FieldValidationTests.kt](src/test/kotlin/com/projects/parceldemo/unit/FieldValidationTests.kt)
   * [PriceBandTests.kt](src/test/kotlin/com/projects/parceldemo/unit/PriceBandTests.kt)
+
+#
+### Integration Testing
+Moving up the pyramid, the tests get fewer and the scope gets wider. The unit tests prove the pricing rules in
+isolation; these tests prove the route through [QuoteController.kt](src/main/kotlin/com/projects/parceldemo/quotes/QuoteController.kt). The application is booted for real and driven over HTTP.
+
+Coverage here is intentionally thin. We are looking for high yielding tests to:
+* Test a handful of valid domestic and international quote requests
+* Test the API handles all the failure cases and the respective error messages [ValidationError.kt](src/main/kotlin/com/projects/parceldemo/quotes/ValidationError.kt)
+
+Quick links to integration tests:
+* [CreateQuoteEndPointTests.kt](src/test/kotlin/com/projects/parceldemo/integration/CreateQuoteEndPointTests.kt)
