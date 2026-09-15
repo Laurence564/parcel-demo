@@ -1,5 +1,9 @@
 ## Parcel demo
 
+![Tests](https://github.com/laurence564/parcel-demo/actions/workflows/test.yml/badge.svg)
+![Kotlin](https://img.shields.io/badge/kotlin-2.3.21-blue?logo=kotlin)
+![Spring Boot](https://img.shields.io/badge/spring--boot-4.1.1-green?logo=springboot)
+
 Parcel demo is a basic quote generator for delivering parcels domestically and internationally.
 It highlights the power of Functional Programming and DDD to build highly testable code iteratively on small units of code.
 
