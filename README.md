@@ -71,3 +71,54 @@ Coverage here is intentionally thin. We are looking for high yielding tests to:
 
 Quick links to integration tests:
 * [CreateQuoteEndPointTests.kt](src/test/kotlin/com/projects/parceldemo/integration/CreateQuoteEndPointTests.kt)
+
+#
+### System Testing
+Now at the top of the pyramid, we are testing the application as a user would in order to get value from the product.
+We've taken a couple of tests validate the happy path for both a domestic and international delivery. The majority of
+the effort goes into checking the negative tests to make sure the user is given all the information they need to correct
+any invalid values they enter when requesting a quote.
+
+By default, tests are run as headless. This is mainly so that they can run within GitHub Actions without the need of 
+adding any flags in the GitHub Actions workflow.
+
+```kotlin
+private val headless: Boolean = System.getenv("E2E_HEADED") == null
+```
+
+Given the tests re-use the same elements on page, we have created a POM for the form. Ids are the favoured selector
+due to the fact they don't need to change unlike other elements which often get updated as development moves on.
+
+```kotlin
+    private fun requestQuote(unvalidatedRequest: UnvalidatedRequest): Page {
+        val page = browser.newContext().newPage()
+
+        page.navigate(baseUrl)
+        page.getByTestId("recipient-name").fill(unvalidatedRequest.recipientName)
+        page.getByTestId("weight-kg").fill(unvalidatedRequest.weightKg)
+        page.getByTestId("country").selectOption(unvalidatedRequest.country)
+        page.getByTestId("get-quote").click()
+
+        return page
+    }
+```
+
+As before, system tests can remain small and easy to reason about. Again Ids are used to get the error text because we
+want to keep our tests robust enough to survive front-end code changes. In bigger teams, communication is key when changing
+selectors (especially Ids) because tests can be fixed without false negatives coming from the CI/CD or nightly test runs.
+
+```kotlin
+    @Test
+    fun `an international quote applies the surcharge`() {
+        val page = requestQuote(
+            UnvalidatedRequest(recipientName = "John Smith", weightKg = "5.01", country = "FR")
+        )
+
+        assertThat(page.getByTestId("price")).hasText("£6.00")
+        assertThat(page.getByTestId("destination")).hasText("INTERNATIONAL")
+    }
+```
+
+Quick links:
+  * [PositiveQuoteJourneyTests.kt](src/test/kotlin/com/projects/parceldemo/e2e/PositiveQuoteJourneyTests.kt)
+  * [NegativeQuoteJourneyTests.kt](src/test/kotlin/com/projects/parceldemo/e2e/NegativeQuoteJourneyTests.kt) 
