@@ -4,6 +4,7 @@ import com.microsoft.playwright.Browser
 import com.microsoft.playwright.Page
 import com.microsoft.playwright.Playwright
 import com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat
+import com.projects.parceldemo.quotes.UnvalidatedRequest
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -41,21 +42,11 @@ class PositiveQuoteJourneyTests {
         }
     }
 
-    private fun requestQuote(recipientName: String, weightKg: String, country: String): Page {
-        val page = browser.newContext().newPage()
-
-        page.navigate(baseUrl)
-        page.getByTestId("recipient-name").fill(recipientName)
-        page.getByTestId("weight-kg").fill(weightKg)
-        page.getByTestId("country").selectOption(country)
-        page.getByTestId("get-quote").click()
-
-        return page
-    }
-
     @Test
     fun `a domestic quote is displayed for a valid request`() {
-        val page = requestQuote(recipientName = "John Snow", weightKg = "5.01", country = "UK")
+        val page = requestQuote(
+            UnvalidatedRequest(recipientName = "John Snow", weightKg = "5.01", country = "UK")
+        )
 
         assertThat(page.getByTestId("price")).hasText("£5.00")
         assertThat(page.getByTestId("destination")).hasText("DOMESTIC")
@@ -63,10 +54,24 @@ class PositiveQuoteJourneyTests {
 
     @Test
     fun `an international quote applies the surcharge`() {
-        val page = requestQuote(recipientName = "John Smith", weightKg = "5.01", country = "FR")
+        val page = requestQuote(
+            UnvalidatedRequest(recipientName = "John Smith", weightKg = "5.01", country = "FR")
+        )
 
         assertThat(page.getByTestId("price")).hasText("£6.00")
         assertThat(page.getByTestId("destination")).hasText("INTERNATIONAL")
     }
 
+
+    private fun requestQuote(unvalidatedRequest: UnvalidatedRequest): Page {
+        val page = browser.newContext().newPage()
+
+        page.navigate(baseUrl)
+        page.getByTestId("recipient-name").fill(unvalidatedRequest.recipientName)
+        page.getByTestId("weight-kg").fill(unvalidatedRequest.weightKg)
+        page.getByTestId("country").selectOption(unvalidatedRequest.country)
+        page.getByTestId("get-quote").click()
+
+        return page
+    }
 }
