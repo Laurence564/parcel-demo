@@ -37,6 +37,19 @@ options.
 | BA4               | 15            | 14.99      | 15      | 15.01      | £7 / £7 / £10                    |
 | BA5               | 20            | 19.99      | 20      | 20.01      | £10 / £10 / Error                |
 
+<br>
+
+#
+### Decision Table
+
+|                                    |   R1 |   R2 |
+|------------------------------------|-----:|-----:|
+| C1. Destination is Domestic        |    T |    F |
+| C2. Destination is International   |    F |    T |
+| ---------------------------------- | ---- | ---- |
+| Base rate applied                  |    X |    X |
+| International shipping added (20%) |      |    X |
+
 #
 ### Unit Testing
 In the testing pyramid, this is where the bulk tests live. The unit under test is a pure partial function where 
@@ -122,3 +135,54 @@ selectors (especially Ids) because tests can be fixed without false negatives co
 Quick links:
   * [PositiveQuoteJourneyTests.kt](src/test/kotlin/com/projects/parceldemo/e2e/PositiveQuoteJourneyTests.kt)
   * [NegativeQuoteJourneyTests.kt](src/test/kotlin/com/projects/parceldemo/e2e/NegativeQuoteJourneyTests.kt) 
+
+
+#
+### Architecture Choices
+I came across functional programming and domain driven design after getting frustrated that no matter how hard I tried
+to keep my code simple, complexity always caught up. Branching on boolean after boolean made code difficult to follow
+when revisiting it even a few weeks later, and knowing how a change would ripple through a function became a task in
+itself. My testing experience usually caught the side effects, but relying on that wasn't acceptable to me. I'd
+practiced OOP, broken code into classes and followed SOLID, but I wanted something stricter.
+
+This is where I came across Scott Wlaschin's *Domain Modeling Made Functional*. One of its key concepts is defining
+errors out of existence by making unrepresentable states impossible.
+
+``` kotlin
+@JvmInline
+value class Weight private constructor(val value: Double) {
+    companion object {
+        fun from(rawWeight: String): Either<ValidationError, Weight> = either { ... }
+    }
+}
+```
+
+The private constructor is mechanism which allows us to be strict about enforcing the expected state.
+Nothing outside the class can write `Weight(-5.0)`, and `from` is the only way in — it returns an `Either`,
+so the caller has to handle the failure before they ever hold a `Weight`. A negative
+weight isn't a value that gets rejected; it's a value that cannot be expressed.
+
+The payoff shows up one function later:
+
+``` kotlin
+fun Weight.pricingBand(): PricingBand =
+    when {
+        value <= 5.0 -> PricingBand.UP_TO_5_KG
+        ...
+    }
+```
+
+Note the return type — `PricingBand`. Defensive code is not needed here because this has already been done by
+what is known as "validation at the boundary". This means that the domain code we are working with becomes much
+simpler to work with, and we can focus on purely the pricing functionality.
+Furthermore, validation happens in one place and the Arrow library makes this read like a check list:
+
+``` kotlin
+  ensure(weight.scale() <= 2) {
+    ValidationError.WeightMustNotExceedTwoDecimalPlaces
+  }
+
+  ensure(weight > BigDecimal.ZERO) {
+    ValidationError.WeightMustBeGreaterThanZero
+  }
+```
