@@ -78,4 +78,22 @@ class FieldValidationTests {
         // Assert
         assertEquals(expectedValidationError, actualValidationError)
     }
+
+    @Test
+    fun `The weight is locked to two decimal places`() {
+         // Arrange
+        val unvalidatedRequest =  UnvalidatedRequest(
+            recipientName = "Jon Snow",
+            weightKg = "10.001",
+            country = "UK"
+        )
+
+        // Act
+        val actualValidationError = createQuote(unvalidatedRequest).leftOrNull()
+
+        // Assert
+        val expectedValidationError = ValidationError.WeightMustNotExceedTwoDecimalPlaces
+        assertEquals(expectedValidationError, actualValidationError)
+
+    }
 }

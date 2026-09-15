@@ -10,6 +10,7 @@ sealed interface ValidationError {
     data object WeightMustBeANumber : ValidationError
     data object WeightMustBeGreaterThanZero : ValidationError
     data object WeightMustNotExceedTwentyKg : ValidationError
+    data object WeightMustNotExceedTwoDecimalPlaces : ValidationError
 
     data object DestinationMustNotBeBlank : ValidationError
     data object InvalidCountryCode : ValidationError
@@ -37,5 +38,8 @@ fun ValidationError.toResponseStatusException(): ResponseStatusException {
 
         ValidationError.WeightMustNotExceedTwentyKg ->
             ResponseStatusException(HttpStatus.BAD_REQUEST, "Maximum weight value exceeds the 20 KG threshold.")
+
+        ValidationError.WeightMustNotExceedTwoDecimalPlaces ->
+            ResponseStatusException(HttpStatus.BAD_REQUEST, "Please enter a weight with a maximum of two decimal places.")
     }
 }

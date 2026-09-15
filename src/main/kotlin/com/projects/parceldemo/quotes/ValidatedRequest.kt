@@ -3,6 +3,7 @@ package com.projects.parceldemo.quotes
 import arrow.core.Either
 import arrow.core.raise.either
 import arrow.core.raise.ensure
+import java.math.BigDecimal
 
 data class ValidatedRequest(
     val recipientName: RecipientName,
@@ -29,17 +30,22 @@ value class RecipientName private constructor(val value: String) {
 value class Weight private constructor(val value: Double) {
     companion object {
         fun from(rawWeight: String): Either<ValidationError, Weight> = either {
-            val weight = rawWeight.toDoubleOrNull()
+            val weight = rawWeight.trim().toBigDecimalOrNull()
                 ?: raise(ValidationError.WeightMustBeANumber)
 
-            ensure(weight > 0.0) {
+            ensure(weight.scale() <= 2) {
+                ValidationError.WeightMustNotExceedTwoDecimalPlaces
+            }
+
+            ensure(weight > BigDecimal.ZERO) {
                 ValidationError.WeightMustBeGreaterThanZero
             }
 
-            ensure(weight <= 20.0) {
+            ensure(weight <= BigDecimal("20.00")) {
                 ValidationError.WeightMustNotExceedTwentyKg
             }
-            Weight(weight)
+
+            Weight(weight.toDouble())
         }
     }
 }

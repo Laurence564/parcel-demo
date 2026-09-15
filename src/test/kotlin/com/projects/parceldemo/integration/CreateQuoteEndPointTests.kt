@@ -54,7 +54,7 @@ class CreateQuoteEndPointTests {
     }
 
     @Test
-    fun `Recipient name is left empty`() {
+    fun `Recipient name empty`() {
         // Arrange
         val requestBody = """
             {
@@ -109,7 +109,9 @@ class CreateQuoteEndPointTests {
         "20.01, UK, Maximum weight value exceeds the 20 KG threshold.",
         "0.00,  UK, Please enter a weight greater than zero.",
         "abc,   UK, Please enter a number in the weight field.",
-        "5.00,  XX, Please enter a valid country code."
+        "5.00,  XX, Please enter a valid country code.",
+        "'',    UK, Please enter a number in the weight field.",
+        "5.123,  UK, Please enter a weight with a maximum of two decimal places."
     )
     fun `an invalid request returns a 400 with the validation message`(
         weightKg: String,
