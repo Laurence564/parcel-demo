@@ -1,4 +1,4 @@
-## Parcel demo
+# 📦 Parcel demo
 
 ![Tests](https://github.com/laurence564/parcel-demo/actions/workflows/test.yml/badge.svg)
 ![Kotlin](https://img.shields.io/badge/kotlin-2.3.21-blue?logo=kotlin)
