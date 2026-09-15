@@ -5,7 +5,7 @@
 ![Spring Boot](https://img.shields.io/badge/spring--boot-4.1.1-green?logo=springboot)
 
 Parcel demo is a basic quote generator for delivering parcels domestically and internationally.
-It highlights the power of Functional Programming and DDD to build highly testable code iteratively on small units of code.
+It highlights the power of Functional Programming and DDD to build highly testable code iteratively.
 
 [TEST APPROACH](#test-approach) | [UNIT TESTING](#unit-testing) | [INTEGRATION TESTING](#integration-testing) | [SYSTEM TESTING](#system-testing) | [ARCHITECTURE CHOICES](#architecture-choices) 
 ##
