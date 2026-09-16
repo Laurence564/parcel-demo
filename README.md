@@ -15,7 +15,7 @@ It highlights the power of Functional Programming and DDD to build highly testab
 
 Even simple ideas get complex quickly transferring into code, therefore testing tables are a great way to zoom out and
 get an overarching view point of that complexity.
-In an application focussing on pricing bands, the equivalence partitioning table and boundary analysis are great
+In an application focusing on pricing bands, the equivalence partitioning table and boundary analysis are great
 options.
 
 #### Equivalence Partition (base costs)
@@ -33,7 +33,7 @@ options.
   
 #### Boundary Analysis (base costs)
 
-| Boundary Analysis | Boundary (KG) | Below (KG) | On (KG) | Above (KG) | Expected Oucome (Below/On/Above) |
+| Boundary Analysis | Boundary (KG) | Below (KG) | On (KG) | Above (KG) | Expected Outcome (Below/On/Above) |
 |-------------------|---------------|------------|---------|------------|----------------------------------|
 | BA1               | 0             | -0.01      | 0       | 0.01       | Error / Error / £3               |
 | BA2               | 5             | 4.99       | 5       | 5.01       | £3 / £3 / £5                     |
@@ -47,7 +47,7 @@ options.
 #### Decision Table
 
 | Decision Table                     |   R1 |   R2 |   R3 |   R4 |
-|------------------------------------|-----:|-----:|-----:|-----:|
+|:-----------------------------------|-----:|-----:|-----:|-----:|
 | C1. Destination is Domestic        |    T |    F |    F |    T |
 | C2. Destination is International   |    F |    T |    F |    T |
 | ---------------------------------- | ---- | ---- | ---- | ---- |
