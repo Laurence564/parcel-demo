@@ -46,7 +46,7 @@ options.
 
 #### Decision Table
 
-| Descision Table                    |   R1 |   R2 |   R3 |   R4 |
+| Decision Table                     |   R1 |   R2 |   R3 |   R4 |
 |------------------------------------|-----:|-----:|-----:|-----:|
 | C1. Destination is Domestic        |    T |    F |    F |    T |
 | C2. Destination is International   |    F |    T |    F |    T |
