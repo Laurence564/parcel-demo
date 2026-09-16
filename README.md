@@ -46,13 +46,14 @@ options.
 
 #### Decision Table
 
-|                                    |   R1 |   R2 |
-|------------------------------------|-----:|-----:|
-| C1. Destination is Domestic        |    T |    F |
-| C2. Destination is International   |    F |    T |
-| ---------------------------------- | ---- | ---- |
-| Base rate applied                  |    X |    X |
-| International shipping added (20%) |      |    X |
+| Descision Table                    |   R1 |   R2 |   R3 |   R4 |
+|------------------------------------|-----:|-----:|-----:|-----:|
+| C1. Destination is Domestic        |    T |    F |    F |    T |
+| C2. Destination is International   |    F |    T |    F |    T |
+| ---------------------------------- | ---- | ---- | ---- | ---- |
+| Base rate applied                  |    X |    X |  N/A |  N/A |
+| International shipping added (20%) |      |    X |  N/A |  N/A |
+
 
 #
 ### Unit Testing
